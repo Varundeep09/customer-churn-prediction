@@ -9,9 +9,9 @@ This project is an end-to-end Machine Learning and Decision Intelligence platfor
 ## Key Results at a Glance
 
 * **Production Model Performance:** Logistic Regression achieved **80.45% Accuracy** and **60.88% F1-Score**, outperforming Random Forest across Accuracy, Precision, Recall (+6.95%), and F1-Score (+5.26%).
-* **Primary Statistical Churn Driver:** Month-to-month contracts have the strongest statistical association with attrition ($\chi^2 = 1179.55, p < 0.0001, \text{Cramér's } V = 0.410$).
-* **Primary Protective Factor:** Customer tenure exhibits the strongest protective effect against churn ($r = -0.3540, p < 0.0001$).
-* **Critical SQL Revenue Finding:** First-year customers churn at **47.68%**; high-value accounts ($>\$70/\text{month}$) represent **$323,148/month** in recurring revenue at stake.
+* **Primary Statistical Churn Driver:** Month-to-month contracts have the strongest statistical association with attrition (χ² = 1179.55, p < 0.0001, Cramér's V = 0.410).
+* **Primary Protective Factor:** Customer tenure exhibits the strongest protective effect against churn (r = -0.3540, p < 0.0001).
+* **Critical SQL Revenue Finding:** First-year customers churn at **47.68%**; high-value accounts (>$70/month) represent **$323,148/month** in recurring revenue at stake.
 * **Actionable Retention Playbook:** 6 data-backed customer segments mapped to specific retention workflows and wired directly into the live prediction UI.
 
 ---
@@ -108,7 +108,7 @@ Two classification models were trained and benchmarked:
 - **Logistic Regression** (`max_iter=1000`)
 - **Random Forest Classifier** (`n_estimators=200`, `random_state=42`)
 
-### Benchmark Comparison (Test Set: $N=1,407$)
+### Benchmark Comparison (Test Set: N = 1,407)
 
 | Model | Accuracy | Precision | Recall | F1-Score | Status |
 |---|---:|---:|---:|---:|---|
@@ -122,20 +122,20 @@ Two classification models were trained and benchmarked:
 ## 4. Root Cause Analysis (`model/root_cause_analysis.py`)
 
 To identify *why* customers churn beyond tree-based importance heuristics, formal statistical hypothesis testing was conducted:
-- **Categorical Features:** Pearson's $\chi^2$ Test of Independence with Cramér's $V$ effect size.
-- **Continuous Features:** Point-Biserial Correlation ($r$) with exact two-tailed $p$-values.
+- **Categorical Features:** Pearson's Chi-Square (χ²) Test of Independence with Cramér's V effect size.
+- **Continuous Features:** Point-Biserial Correlation (r) with exact two-tailed p-values.
 
 ### Top Statistically Significant Churn Drivers
 
-| Rank | Feature | Type | Test | Statistic | $p$-value | Effect Size | Finding |
+| Rank | Feature | Type | Test | Statistic | p-value | Effect Size | Finding |
 |---|---|---|---|---|---|---|---|
-| **1** | `Contract` | Categorical | $\chi^2$ Test | $\chi^2 = 1179.55$ | $< 0.0001$ | Cramér's $V = 0.410$ | Month-to-month contracts have the highest statistical dependency with churn. |
-| **2** | `tenure` | Numeric | Point-Biserial | $r = -0.3540$ | $< 0.0001$ | $\|r\| = 0.354$ | Strong protective factor: each month of tenure significantly lowers churn risk. |
-| **3** | `OnlineSecurity` | Categorical | $\chi^2$ Test | $\chi^2 = 846.68$ | $< 0.0001$ | Cramér's $V = 0.347$ | Absence of online security sharply increases customer attrition. |
-| **4** | `TechSupport` | Categorical | $\chi^2$ Test | $\chi^2 = 824.93$ | $< 0.0001$ | Cramér's $V = 0.343$ | Lack of tech support leads to unresolved service friction and departures. |
-| **5** | `PaymentMethod` | Categorical | $\chi^2$ Test | $\chi^2 = 645.43$ | $< 0.0001$ | Cramér's $V = 0.303$ | Electronic check users churn at 45.3% vs ~15% for automatic payments. |
-| **-** | `PhoneService` | Categorical | $\chi^2$ Test | $\chi^2 = 0.87$ | $0.3499$ | $V = 0.011$ | *Not statistically significant ($p > 0.05$).* |
-| **-** | `gender` | Categorical | $\chi^2$ Test | $\chi^2 = 0.48$ | $0.4905$ | $V = 0.008$ | *Not statistically significant ($p > 0.05$).* |
+| **1** | `Contract` | Categorical | Chi-Square (χ²) | χ² = 1179.55 | < 0.0001 | Cramér's V = 0.410 | Month-to-month contracts have the highest statistical dependency with churn. |
+| **2** | `tenure` | Numeric | Point-Biserial | r = -0.3540 | < 0.0001 | \|r\| = 0.354 | Strong protective factor: each month of tenure significantly lowers churn risk. |
+| **3** | `OnlineSecurity` | Categorical | Chi-Square (χ²) | χ² = 846.68 | < 0.0001 | Cramér's V = 0.347 | Absence of online security sharply increases customer attrition. |
+| **4** | `TechSupport` | Categorical | Chi-Square (χ²) | χ² = 824.93 | < 0.0001 | Cramér's V = 0.343 | Lack of tech support leads to unresolved service friction and departures. |
+| **5** | `PaymentMethod` | Categorical | Chi-Square (χ²) | χ² = 645.43 | < 0.0001 | Cramér's V = 0.303 | Electronic check users churn at 45.3% vs ~15% for automatic payments. |
+| **-** | `PhoneService` | Categorical | Chi-Square (χ²) | χ² = 0.87 | 0.3499 | V = 0.011 | *Not statistically significant (p > 0.05).* |
+| **-** | `gender` | Categorical | Chi-Square (χ²) | χ² = 0.48 | 0.4905 | V = 0.008 | *Not statistically significant (p > 0.05).* |
 
 ---
 
@@ -148,7 +148,7 @@ A dedicated SQLite data warehouse (`sql/churn.db`) was constructed to run produc
 3. **`churn_by_payment_method.sql`**: Electronic check churn (45.29%) vs Auto Credit Card (15.25%).
 4. **`churn_by_customer_value.sql`**: High-value (>$70/mo) accounts represent $323,148/month in revenue at stake with a 35.38% churn rate.
 5. **`churn_by_service_combo.sql`**: Fiber optic users without Tech Support or Security churn at 55.01% (vs 17.05% baseline).
-6. **`high_value_at_risk.sql`**: Actionable target list of **814 accounts** ($>70/mo, month-to-month, $<12m tenure) for retention campaigns.
+6. **`high_value_at_risk.sql`**: Actionable target list of **814 accounts** (>$70/mo, month-to-month, <12m tenure) for retention campaigns.
 
 Run all SQL queries via:
 ```powershell
@@ -162,12 +162,12 @@ python sql/run_all_queries.py
 
 Translates statistical findings and SQL insights into an actionable decision matrix:
 
-1. **Critical Risk — High-Value New Customer:** Month-to-month $\cap$ tenure $< 12\text{m} \cap \text{MonthlyCharges} > \$70$. Priority outreach within 48h; offer contract upgrade discount.
-2. **Critical Risk — Unsupported Fiber Customer:** Fiber Optic $\cap$ No Tech Support $\cap$ No Security. Proactive 90-day free trial of Support & Security bundle.
-3. **High Risk — Manual Payment, Month-to-Month:** Electronic check $\cap$ Month-to-month. Offer $5–$10 bill credit to migrate to automated payment.
-4. **Moderate Risk — Early Tenure, Standard Plan:** Tenure 13–24m $\cap$ not on a 2-year contract. Annual renewal discount before entering high-churn window.
-5. **Low Risk — Long-Term Contract Holder:** Two-year contract $\cap$ tenure $> 48\text{m}$. Loyalty perks & premium upsells.
-6. **Low Risk — Fully Protected Customer:** Support $\cap$ Security $\cap$ Multi-year contract. Case study/testimonial candidates.
+1. **Critical Risk — High-Value New Customer:** Month-to-month AND tenure < 12 months AND MonthlyCharges > $70. Priority outreach within 48h; offer contract upgrade discount.
+2. **Critical Risk — Unsupported Fiber Customer:** Fiber Optic AND No Tech Support AND No Security. Proactive 90-day free trial of Support & Security bundle.
+3. **High Risk — Manual Payment, Month-to-Month:** Electronic check AND Month-to-month. Offer $5–$10 bill credit to migrate to automated payment.
+4. **Moderate Risk — Early Tenure, Standard Plan:** Tenure 13–24 months AND not on a 2-year contract. Annual renewal discount before entering high-churn window.
+5. **Low Risk — Long-Term Contract Holder:** Two-year contract AND tenure > 48 months. Loyalty perks & premium upsells.
+6. **Low Risk — Fully Protected Customer:** Tech Support AND Online Security AND Multi-year contract. Case study/testimonial candidates.
 
 ---
 
