@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Churn Prediction Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>Customer Churn Prediction</h1>
+        <p class="subtitle">Telco Customer Churn &mdash; Logistic Regression Model</p>
+      </div>
+      <div class="header-badge">ML Dashboard</div>
+    </div>
+  </header>
+
+  <!-- ── Stats Strip ─────────────────────────────────────────────── -->
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-chip">
+        <span class="stat-icon">&#x1F465;</span>
+        <span class="stat-text"><strong>7,043</strong> customers analyzed</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-chip">
+        <span class="stat-icon">&#x1F4CB;</span>
+        <span class="stat-text"><strong>19</strong> input features</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-chip">
+        <span class="stat-icon">&#x1F3AF;</span>
+        <span class="stat-text"><strong>80.4%</strong> accuracy</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-chip">
+        <span class="stat-icon">&#x1F9E0;</span>
+        <span class="stat-text"><strong>Logistic Regression</strong></span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-chip">
+        <span class="stat-icon">&#x26A0;</span>
+        <span class="stat-text"><strong>26.5%</strong> base churn rate</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ── Top: Form + Result ───────────────────────────────────── -->
+    <div class="top-grid">
+
+      <!-- Left: Input Form -->
+      <section class="card form-card">
+        <div class="section-eyebrow">Step 1</div>
+        <h2>Customer Details</h2>
+        <form id="predict-form" novalidate>
+
+          <fieldset>
+            <legend>Account Info</legend>
+
+            <div class="field-row">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="SeniorCitizen">Senior Citizen</label>
+              <select id="SeniorCitizen" name="SeniorCitizen" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="Partner">Partner</label>
+              <select id="Partner" name="Partner" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="Dependents">Dependents</label>
+              <select id="Dependents" name="Dependents" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="tenure">Tenure (months)</label>
+              <input type="number" id="tenure" name="tenure" min="0" max="72" placeholder="e.g. 12" required />
+            </div>
+
+            <div class="field-row">
+              <label for="Contract">Contract</label>
+              <select id="Contract" name="Contract" required>
+                <option value="Month-to-month">Month-to-month</option>
+                <option value="One year">One year</option>
+                <option value="Two year">Two year</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="PaperlessBilling">Paperless Billing</label>
+              <select id="PaperlessBilling" name="PaperlessBilling" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="PaymentMethod">Payment Method</label>
+              <select id="PaymentMethod" name="PaymentMethod" required>
+                <option value="Electronic check">Electronic check</option>
+                <option value="Mailed check">Mailed check</option>
+                <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+                <option value="Credit card (automatic)">Credit card (automatic)</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Services</legend>
+
+            <div class="field-row">
+              <label for="PhoneService">Phone Service</label>
+              <select id="PhoneService" name="PhoneService" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="MultipleLines">Multiple Lines</label>
+              <select id="MultipleLines" name="MultipleLines" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No phone service">No phone service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="InternetService">Internet Service</label>
+              <select id="InternetService" name="InternetService" required>
+                <option value="DSL">DSL</option>
+                <option value="Fiber optic">Fiber optic</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="OnlineSecurity">Online Security</label>
+              <select id="OnlineSecurity" name="OnlineSecurity" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="OnlineBackup">Online Backup</label>
+              <select id="OnlineBackup" name="OnlineBackup" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="DeviceProtection">Device Protection</label>
+              <select id="DeviceProtection" name="DeviceProtection" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="TechSupport">Tech Support</label>
+              <select id="TechSupport" name="TechSupport" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="StreamingTV">Streaming TV</label>
+              <select id="StreamingTV" name="StreamingTV" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+
+            <div class="field-row">
+              <label for="StreamingMovies">Streaming Movies</label>
+              <select id="StreamingMovies" name="StreamingMovies" required>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No internet service">No internet service</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Billing</legend>
+
+            <div class="field-row">
+              <label for="MonthlyCharges">Monthly Charges ($)</label>
+              <input type="number" id="MonthlyCharges" name="MonthlyCharges" min="0" step="0.01" placeholder="e.g. 70.35" required />
+            </div>
+
+            <div class="field-row">
+              <label for="TotalCharges">
+                Total Charges ($)
+                <span class="optional-hint">(optional &mdash; estimated if blank)</span>
+              </label>
+              <input type="number" id="TotalCharges" name="TotalCharges" min="0" step="0.01" placeholder="e.g. 845.25" />
+            </div>
+          </fieldset>
+
+          <div id="form-error" class="form-error hidden"></div>
+
+          <button type="submit" id="submit-btn">
+            <span id="btn-text">Predict Churn</span>
+            <span id="btn-spinner" class="spinner hidden"></span>
+          </button>
+
+        </form>
+      </section>
+
+      <!-- Right: Result Panel -->
+      <section class="card result-card" id="result-panel">
+
+        <!-- Empty state -->
+        <div class="result-placeholder" id="result-placeholder">
+          <div class="placeholder-top">
+            <div class="placeholder-icon">&#x1F4CA;</div>
+            <div class="placeholder-intro">
+              <p class="placeholder-title">Churn Risk Analyzer</p>
+              <p class="placeholder-desc">This model analyzes 19 customer attributes to estimate churn risk using a Logistic Regression model trained on 7,000+ telecom customers.</p>
+            </div>
+          </div>
+
+          <div class="how-it-works">
+            <p class="how-title">How it works</p>
+            <ol class="stepper">
+              <li class="step">
+                <span class="step-num">1</span>
+                <div class="step-body">
+                  <span class="step-label">Enter customer details</span>
+                  <span class="step-desc">Fill in account, service, and billing info on the left</span>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-num">2</span>
+                <div class="step-body">
+                  <span class="step-label">Model analyzes patterns</span>
+                  <span class="step-desc">The API applies the trained Logistic Regression model</span>
+                </div>
+              </li>
+              <li class="step">
+                <span class="step-num">3</span>
+                <div class="step-body">
+                  <span class="step-label">Get churn probability</span>
+                  <span class="step-desc">See a probability score, risk level, and key risk factors</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <p class="placeholder-cta">&#x2190; Fill in the form and click <strong>Predict Churn</strong></p>
+        </div>
+
+        <!-- Result content (shown after prediction) -->
+        <div class="result-content hidden" id="result-content">
+          <div class="section-eyebrow">Results</div>
+          <h2>Prediction Result</h2>
+
+          <div class="result-main">
+            <div class="probability-display">
+              <span class="prob-value" id="prob-value">—</span>
+              <span class="prob-label">Churn Probability</span>
+            </div>
+            <div id="risk-badge" class="risk-badge">—</div>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="doughnut-chart"></canvas>
+          </div>
+
+          <div class="prediction-verdict" id="prediction-verdict"></div>
+
+          <div class="result-details">
+            <div class="detail-block" id="playbook-segment-block">
+              <span class="detail-label">&#x1F3AF; Matched Playbook Segment</span>
+              <span class="detail-value segment-name-text" id="segment-name-text">—</span>
+            </div>
+            <div class="detail-block" id="recommendation-block">
+              <span class="detail-label">&#x1F4A1; Recommended Retention Action</span>
+              <span class="detail-value" id="recommendation-text">—</span>
+            </div>
+            <div class="detail-block" id="supporting-data-block">
+              <span class="detail-label">&#x1F4CA; Supporting Data & Statistical Basis</span>
+              <span class="detail-value citation-text" id="supporting-data-text">—</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- ── Model Metrics ────────────────────────────────────────── -->
+    <section class="metrics-strip">
+      <div class="section-eyebrow">Model Performance</div>
+      <h2>Logistic Regression <span class="model-label">Test Set Results</span></h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-value">80.45%</span>
+          <span class="metric-name">Accuracy</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">65.05%</span>
+          <span class="metric-name">Precision</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">57.22%</span>
+          <span class="metric-name">Recall</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">60.88%</span>
+          <span class="metric-name">F1-Score</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Key Insights ─────────────────────────────────────────── -->
+    <section class="insights-section">
+      <div class="section-eyebrow">EDA Findings</div>
+      <h2>Key Insights <span class="insights-label">based on training data analysis</span></h2>
+      <div class="insights-grid">
+
+        <div class="card insight-card">
+          <h3>Churn Rate by Contract Type</h3>
+          <div class="insight-chart-container">
+            <canvas id="chart-contract"></canvas>
+          </div>
+        </div>
+
+        <div class="card insight-card">
+          <h3>Churn Rate by Tenure Group</h3>
+          <div class="insight-chart-container">
+            <canvas id="chart-tenure"></canvas>
+          </div>
+        </div>
+
+        <div class="card insight-card">
+          <h3>Churn Rate by Internet Service</h3>
+          <div class="insight-chart-container">
+            <canvas id="chart-internet"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-title">Customer Churn Prediction</span>
+        <span class="footer-sep">&mdash;</span>
+        <span>Telco Dataset &mdash; Trained 2026-07-29</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-stack">Built with Python &middot; Scikit-learn &middot; FastAPI &middot; Chart.js</span>
+        <a href="#" class="footer-gh" title="GitHub" aria-label="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

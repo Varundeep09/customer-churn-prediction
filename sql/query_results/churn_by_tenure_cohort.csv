@@ -1,0 +1,6 @@
+tenure_cohort,total_customers,churned_customers,retained_customers,churn_rate_pct,avg_monthly_charges,total_cohort_revenue
+0-12 Months,2175,1037,1138,47.68,56.17,601651.9
+13-24 Months,1024,294,730,28.71,61.36,1153287.7
+25-48 Months,1594,325,1269,20.39,65.93,3810380.35
+49-60 Months,832,120,712,14.42,70.55,3201646.3
+61-72 Months,1407,93,1314,6.61,75.95,7289202.45

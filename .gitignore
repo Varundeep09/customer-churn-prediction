@@ -1,0 +1,13 @@
+# Python & Environment
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+*.egg-info/
+
+# Binary Model Artifacts (reproducible via model/preprocess.py and model/train.py)
+model/*.pkl
+
+# SQLite Database Binary (reproducible via sql/build_database.py)
+sql/churn.db

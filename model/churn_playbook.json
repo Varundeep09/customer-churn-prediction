@@ -1,0 +1,56 @@
+[
+  {
+    "segment_id": 1,
+    "segment_name": "Critical Risk — High-Value New Customer",
+    "conditions": "Contract = 'Month-to-month' AND tenure < 12 AND MonthlyCharges > 70.0",
+    "risk_level": "Critical",
+    "recommended_action": "Priority retention outreach within 48 hours; offer contract upgrade discount or loyalty credit; assign dedicated account representative.",
+    "rationale": "High revenue accounts in their first year with month-to-month flexibility have the highest cumulative attrition rate and highest revenue risk.",
+    "supporting_data": "47.68% 1st-year churn rate; 814 target accounts identified in SQL representing $323,148/month in revenue at stake."
+  },
+  {
+    "segment_id": 2,
+    "segment_name": "Critical Risk — Unsupported Fiber Customer",
+    "conditions": "InternetService = 'Fiber optic' AND OnlineSecurity = 'No' AND TechSupport = 'No'",
+    "risk_level": "Critical",
+    "recommended_action": "Proactively offer free 90-day trial of Tech Support & Online Security bundle; initiate onboarding check-in call.",
+    "rationale": "Fiber optic customers experiencing technical or security friction without support add-ons churn at more than triple the baseline rate.",
+    "supporting_data": "55.01% churn rate for this exact service combination vs 17.05% for all other customer profiles."
+  },
+  {
+    "segment_id": 3,
+    "segment_name": "High Risk — Manual Payment, Month-to-Month",
+    "conditions": "PaymentMethod = 'Electronic check' AND Contract = 'Month-to-month'",
+    "risk_level": "High",
+    "recommended_action": "Encourage migration to automated recurring payment (Credit Card / Bank Transfer) via a $5-$10 bill credit incentive.",
+    "rationale": "Electronic check payments suffer from high transaction friction and active monthly bill scrutiny, accelerating month-to-month departures.",
+    "supporting_data": "45.29% churn rate for Electronic check users vs 15.25% for Auto Credit Card and 16.73% for Auto Bank Transfer."
+  },
+  {
+    "segment_id": 4,
+    "segment_name": "Moderate Risk — Early Tenure, Standard Plan",
+    "conditions": "tenure >= 13 AND tenure <= 24 AND Contract != 'Two year'",
+    "risk_level": "Moderate",
+    "recommended_action": "Offer annual contract renewal incentive before customer reaches the 2-year mark; monitor usage and satisfaction score.",
+    "rationale": "Second-year customers are in a transitional retention phase where securing a multi-year commitment drastically reduces long-term churn.",
+    "supporting_data": "28.71% churn rate in 13-24 month cohort vs 20.39% at 25-48 months (statistical correlation r = -0.354 confirms strong protective effect of tenure)."
+  },
+  {
+    "segment_id": 5,
+    "segment_name": "Low Risk — Long-Term Contract Holder",
+    "conditions": "Contract = 'Two year' AND tenure > 48",
+    "risk_level": "Low",
+    "recommended_action": "No urgent retention action required; target for loyalty perks, referral incentives, and premium service upsells.",
+    "rationale": "Customers with multi-year commitments and extensive tenure demonstrate strong brand loyalty and minimal attrition risk.",
+    "supporting_data": "2.85% churn rate for Two-year contracts and 6.61% churn rate for customers with 61-72 months tenure."
+  },
+  {
+    "segment_id": 6,
+    "segment_name": "Low Risk — Fully Protected Customer",
+    "conditions": "OnlineSecurity = 'Yes' AND TechSupport = 'Yes' AND Contract != 'Month-to-month'",
+    "risk_level": "Low",
+    "recommended_action": "Maintain service quality; eligible for case study/testimonial requests and early access to new features.",
+    "rationale": "Multi-year customers with full support and security coverage have virtually zero friction and high lifetime value.",
+    "supporting_data": "OnlineSecurity (Cramér's V = 0.347) and TechSupport (V = 0.343) statistically rank as top-4 drivers preventing churn."
+  }
+]

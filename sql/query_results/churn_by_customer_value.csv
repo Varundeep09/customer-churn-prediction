@@ -1,0 +1,4 @@
+value_tier,total_customers,churned_customers,retained_customers,churn_rate_pct,avg_monthly_charges,avg_tenure_months,total_monthly_revenue_at_stake
+High Value (>$70),3581,1267,2314,35.38,90.24,36.8,323148.1
+Medium Value ($35-$70),1726,414,1312,23.99,54.79,26.9,94566.65
+Low Value (<$35),1725,188,1537,10.9,22.0,28.8,37946.25

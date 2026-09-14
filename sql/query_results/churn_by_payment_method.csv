@@ -1,0 +1,5 @@
+payment_method,total_customers,churned_customers,retained_customers,churn_rate_pct,avg_monthly_charges,avg_tenure_months,total_revenue
+Electronic check,2365,1071,1294,45.29,76.26,25.2,4944903.25
+Mailed check,1604,308,1296,19.2,43.96,21.9,1691392.2
+Bank transfer (automatic),1542,258,1284,16.73,67.21,43.7,4748279.9
+Credit card (automatic),1521,232,1289,15.25,66.52,43.3,4671593.35
